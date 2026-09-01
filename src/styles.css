@@ -2,6 +2,9 @@
 @source "../src";
 @import "tw-animate-css";
 
+/* FoodPlease brand font */
+
+
 @custom-variant dark (&:is(.dark *));
 
 /*

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Pencil, Plus } from "lucide-react";
+import { Pencil, Plus, UtensilsCrossed } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -92,12 +92,15 @@ function MenuPage() {
             >
               <div
                 className={cn(
-                  "grid aspect-[16/9] place-items-center bg-primary-soft text-5xl",
-                  !p.available && "opacity-40 grayscale",
+                  "relative grid aspect-[16/9] place-items-center bg-primary-soft",
+                  !p.available && "opacity-50 grayscale",
                 )}
                 aria-hidden
               >
-                {p.emoji}
+                <span className="text-4xl font-extrabold tracking-tight text-primary/40">
+                  {p.name.slice(0, 2).toUpperCase()}
+                </span>
+                <UtensilsCrossed className="absolute right-3 bottom-3 size-5 text-primary/40" />
               </div>
               <div className="flex flex-1 flex-col gap-2 p-4">
                 <div className="flex items-start justify-between gap-2">

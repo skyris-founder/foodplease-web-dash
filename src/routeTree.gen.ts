@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HistorialRouteImport } from './routes/historial'
 import { Route as MenuRouteImport } from './routes/menu'
 import { Route as PedidosRouteImport } from './routes/pedidos'
 import { Route as RepartidoresRouteImport } from './routes/repartidores'
@@ -17,6 +18,11 @@ import { Route as RepartidoresRouteImport } from './routes/repartidores'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistorialRoute = HistorialRouteImport.update({
+  id: '/historial',
+  path: '/historial',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MenuRoute = MenuRouteImport.update({
@@ -37,12 +43,14 @@ const RepartidoresRoute = RepartidoresRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/historial': typeof HistorialRoute
   '/menu': typeof MenuRoute
   '/pedidos': typeof PedidosRoute
   '/repartidores': typeof RepartidoresRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/historial': typeof HistorialRoute
   '/menu': typeof MenuRoute
   '/pedidos': typeof PedidosRoute
   '/repartidores': typeof RepartidoresRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/historial': typeof HistorialRoute
   '/menu': typeof MenuRoute
   '/pedidos': typeof PedidosRoute
   '/repartidores': typeof RepartidoresRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/menu' | '/pedidos' | '/repartidores'
+  fullPaths: '/' | '/historial' | '/menu' | '/pedidos' | '/repartidores'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/menu' | '/pedidos' | '/repartidores'
-  id: '__root__' | '/' | '/menu' | '/pedidos' | '/repartidores'
+  to: '/' | '/historial' | '/menu' | '/pedidos' | '/repartidores'
+  id: '__root__' | '/' | '/historial' | '/menu' | '/pedidos' | '/repartidores'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HistorialRoute: typeof HistorialRoute
   MenuRoute: typeof MenuRoute
   PedidosRoute: typeof PedidosRoute
   RepartidoresRoute: typeof RepartidoresRoute
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historial': {
+      id: '/historial'
+      path: '/historial'
+      fullPath: '/historial'
+      preLoaderRoute: typeof HistorialRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/menu': {
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HistorialRoute: HistorialRoute,
   MenuRoute: MenuRoute,
   PedidosRoute: PedidosRoute,
   RepartidoresRoute: RepartidoresRoute,

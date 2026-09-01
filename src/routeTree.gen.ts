@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MenuRouteImport } from './routes/menu'
 import { Route as PedidosRouteImport } from './routes/pedidos'
+import { Route as RepartidoresRouteImport } from './routes/repartidores'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const PedidosRoute = PedidosRouteImport.update({
   path: '/pedidos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RepartidoresRoute = RepartidoresRouteImport.update({
+  id: '/repartidores',
+  path: '/repartidores',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/menu': typeof MenuRoute
   '/pedidos': typeof PedidosRoute
+  '/repartidores': typeof RepartidoresRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/menu': typeof MenuRoute
   '/pedidos': typeof PedidosRoute
+  '/repartidores': typeof RepartidoresRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/menu': typeof MenuRoute
   '/pedidos': typeof PedidosRoute
+  '/repartidores': typeof RepartidoresRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/menu' | '/pedidos'
+  fullPaths: '/' | '/menu' | '/pedidos' | '/repartidores'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/menu' | '/pedidos'
-  id: '__root__' | '/' | '/menu' | '/pedidos'
+  to: '/' | '/menu' | '/pedidos' | '/repartidores'
+  id: '__root__' | '/' | '/menu' | '/pedidos' | '/repartidores'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MenuRoute: typeof MenuRoute
   PedidosRoute: typeof PedidosRoute
+  RepartidoresRoute: typeof RepartidoresRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PedidosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/repartidores': {
+      id: '/repartidores'
+      path: '/repartidores'
+      fullPath: '/repartidores'
+      preLoaderRoute: typeof RepartidoresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MenuRoute: MenuRoute,
   PedidosRoute: PedidosRoute,
+  RepartidoresRoute: RepartidoresRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

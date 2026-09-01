@@ -90,7 +90,7 @@ export function FoodPleaseProvider({ children }: { children: ReactNode }) {
           if (o.id !== orderId) return o;
           const idx = ORDER_FLOW.indexOf(o.status);
           if (idx >= ORDER_FLOW.length - 1) return o;
-          const next = ORDER_FLOW[idx + 1];
+          const next = ORDER_FLOW[idx + 1] as OrderStatus;
           pushActivity(
             next === "entregado"
               ? `Pedido #${o.id} fue entregado`

@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MenuRouteImport } from './routes/menu'
 import { Route as PedidosRouteImport } from './routes/pedidos'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MenuRoute = MenuRouteImport.update({
+  id: '/menu',
+  path: '/menu',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PedidosRoute = PedidosRouteImport.update({
@@ -25,27 +31,31 @@ const PedidosRoute = PedidosRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/menu': typeof MenuRoute
   '/pedidos': typeof PedidosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/menu': typeof MenuRoute
   '/pedidos': typeof PedidosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/menu': typeof MenuRoute
   '/pedidos': typeof PedidosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/pedidos'
+  fullPaths: '/' | '/menu' | '/pedidos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/pedidos'
-  id: '__root__' | '/' | '/pedidos'
+  to: '/' | '/menu' | '/pedidos'
+  id: '__root__' | '/' | '/menu' | '/pedidos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MenuRoute: typeof MenuRoute
   PedidosRoute: typeof PedidosRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/menu': {
+      id: '/menu'
+      path: '/menu'
+      fullPath: '/menu'
+      preLoaderRoute: typeof MenuRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pedidos': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MenuRoute: MenuRoute,
   PedidosRoute: PedidosRoute,
 }
 export const routeTree = rootRouteImport

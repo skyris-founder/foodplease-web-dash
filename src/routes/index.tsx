@@ -65,8 +65,8 @@ function Dashboard() {
             </Button>
           </div>
 
-          <div className="hidden lg:block">
-            <table className="w-full text-sm">
+          <div className="hidden overflow-x-auto lg:block">
+            <table className="w-full min-w-[54rem] text-sm">
               <thead className="bg-muted/60 text-left text-xs text-muted-foreground uppercase">
                 <tr>
                   {["Pedido", "Cliente", "Hora", "Total", "Estado", "Repartidor", ""].map((h) => (

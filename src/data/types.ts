@@ -44,6 +44,10 @@ export interface OrderItem {
 
 export interface Order {
   id: string;
+  /** Código corto legible del pedido (persistido en la base de datos). */
+  code?: string;
+  restaurantId?: string;
+  customerId?: string;
   customer: string;
   phone: string;
   address: string;
@@ -79,6 +83,7 @@ export interface Product {
   category: string;
   available: boolean;
   emoji: string;
+  categoryId?: string | null;
 }
 
 export interface ActivityEvent {

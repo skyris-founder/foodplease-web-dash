@@ -10,15 +10,23 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ClienteRouteImport } from './routes/cliente'
 import { Route as ConfiguracionRouteImport } from './routes/configuracion'
 import { Route as HistorialRouteImport } from './routes/historial'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as MenuRouteImport } from './routes/menu'
 import { Route as PedidosRouteImport } from './routes/pedidos'
+import { Route as RepartidorRouteImport } from './routes/repartidor'
 import { Route as RepartidoresRouteImport } from './routes/repartidores'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClienteRoute = ClienteRouteImport.update({
+  id: '/cliente',
+  path: '/cliente',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfiguracionRoute = ConfiguracionRouteImport.update({
@@ -31,6 +39,11 @@ const HistorialRoute = HistorialRouteImport.update({
   path: '/historial',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MenuRoute = MenuRouteImport.update({
   id: '/menu',
   path: '/menu',
@@ -41,6 +54,11 @@ const PedidosRoute = PedidosRouteImport.update({
   path: '/pedidos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RepartidorRoute = RepartidorRouteImport.update({
+  id: '/repartidor',
+  path: '/repartidor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RepartidoresRoute = RepartidoresRouteImport.update({
   id: '/repartidores',
   path: '/repartidores',
@@ -49,62 +67,83 @@ const RepartidoresRoute = RepartidoresRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cliente': typeof ClienteRoute
   '/configuracion': typeof ConfiguracionRoute
   '/historial': typeof HistorialRoute
+  '/login': typeof LoginRoute
   '/menu': typeof MenuRoute
   '/pedidos': typeof PedidosRoute
+  '/repartidor': typeof RepartidorRoute
   '/repartidores': typeof RepartidoresRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cliente': typeof ClienteRoute
   '/configuracion': typeof ConfiguracionRoute
   '/historial': typeof HistorialRoute
+  '/login': typeof LoginRoute
   '/menu': typeof MenuRoute
   '/pedidos': typeof PedidosRoute
+  '/repartidor': typeof RepartidorRoute
   '/repartidores': typeof RepartidoresRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cliente': typeof ClienteRoute
   '/configuracion': typeof ConfiguracionRoute
   '/historial': typeof HistorialRoute
+  '/login': typeof LoginRoute
   '/menu': typeof MenuRoute
   '/pedidos': typeof PedidosRoute
+  '/repartidor': typeof RepartidorRoute
   '/repartidores': typeof RepartidoresRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cliente'
     | '/configuracion'
     | '/historial'
+    | '/login'
     | '/menu'
     | '/pedidos'
+    | '/repartidor'
     | '/repartidores'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/cliente'
     | '/configuracion'
     | '/historial'
+    | '/login'
     | '/menu'
     | '/pedidos'
+    | '/repartidor'
     | '/repartidores'
   id:
     | '__root__'
     | '/'
+    | '/cliente'
     | '/configuracion'
     | '/historial'
+    | '/login'
     | '/menu'
     | '/pedidos'
+    | '/repartidor'
     | '/repartidores'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ClienteRoute: typeof ClienteRoute
   ConfiguracionRoute: typeof ConfiguracionRoute
   HistorialRoute: typeof HistorialRoute
+  LoginRoute: typeof LoginRoute
   MenuRoute: typeof MenuRoute
   PedidosRoute: typeof PedidosRoute
+  RepartidorRoute: typeof RepartidorRoute
   RepartidoresRoute: typeof RepartidoresRoute
 }
 
@@ -115,6 +154,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cliente': {
+      id: '/cliente'
+      path: '/cliente'
+      fullPath: '/cliente'
+      preLoaderRoute: typeof ClienteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/configuracion': {
@@ -131,6 +177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistorialRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/menu': {
       id: '/menu'
       path: '/menu'
@@ -145,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PedidosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/repartidor': {
+      id: '/repartidor'
+      path: '/repartidor'
+      fullPath: '/repartidor'
+      preLoaderRoute: typeof RepartidorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/repartidores': {
       id: '/repartidores'
       path: '/repartidores'
@@ -157,10 +217,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ClienteRoute: ClienteRoute,
   ConfiguracionRoute: ConfiguracionRoute,
   HistorialRoute: HistorialRoute,
+  LoginRoute: LoginRoute,
   MenuRoute: MenuRoute,
   PedidosRoute: PedidosRoute,
+  RepartidorRoute: RepartidorRoute,
   RepartidoresRoute: RepartidoresRoute,
 }
 export const routeTree = rootRouteImport

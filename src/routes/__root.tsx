@@ -4,6 +4,8 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
+  useNavigate,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -12,9 +14,10 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppShell } from "@/components/foodplease/AppShell";
+import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider, useAuth } from "@/store/auth";
 import { FoodPleaseProvider } from "@/store/foodplease";
-
 
 function NotFoundComponent() {
   return (
@@ -130,19 +133,101 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Enruta según el rol del usuario autenticado:
+ * - sin sesión           -> /login
+ * - role "restaurante"   -> AppShell + dashboard actual (sin cambios)
+ * - role "cliente"       -> /cliente
+ * - role "repartidor"    -> /repartidor
+ * - sesión sin perfil    -> pantalla de aviso (perfil no vinculado)
+ */
+function AppRouting() {
+  const { session, role, loading, error, signOut } = useAuth();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loading) return;
+    const isLoginRoute = pathname === "/login";
+
+    if (!session) {
+      if (!isLoginRoute) navigate({ to: "/login" });
+      return;
+    }
+
+    if (isLoginRoute) {
+      navigate({ to: "/" });
+      return;
+    }
+
+    if (!role) return;
+
+    if (role === "cliente" && !pathname.startsWith("/cliente")) {
+      navigate({ to: "/cliente" });
+    } else if (role === "repartidor" && !pathname.startsWith("/repartidor")) {
+      navigate({ to: "/repartidor" });
+    } else if (
+      role === "restaurante" &&
+      (pathname.startsWith("/cliente") || pathname.startsWith("/repartidor"))
+    ) {
+      navigate({ to: "/" });
+    }
+  }, [loading, session, role, pathname, navigate]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p className="text-sm text-muted-foreground">Cargando…</p>
+      </div>
+    );
+  }
+
+  if (pathname === "/login") {
+    return <Outlet />;
+  }
+
+  if (!session) {
+    return null;
+  }
+
+  if (!role) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-4 text-center">
+        <h1 className="text-lg font-bold">Cuenta sin perfil asociado</h1>
+        <p className="max-w-sm text-sm text-muted-foreground">
+          {error ??
+            "Tu usuario inició sesión pero no tiene un perfil de FoodPlease vinculado todavía."}
+        </p>
+        <Button variant="outline" className="rounded-xl" onClick={() => signOut()}>
+          Cerrar sesión
+        </Button>
+      </div>
+    );
+  }
+
+  if (role === "restaurante") {
+    return (
+      <AppShell>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </AppShell>
+    );
+  }
+
+  return <Outlet />;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <FoodPleaseProvider>
-        <AppShell>
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </AppShell>
-        <Toaster position="top-right" richColors />
-      </FoodPleaseProvider>
+      <AuthProvider>
+        <FoodPleaseProvider>
+          <AppRouting />
+          <Toaster position="top-right" richColors />
+        </FoodPleaseProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
-

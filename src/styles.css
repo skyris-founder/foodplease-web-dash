@@ -4,7 +4,6 @@
 
 /* FoodPlease brand font */
 
-
 @custom-variant dark (&:is(.dark *));
 
 /*
@@ -123,7 +122,6 @@
   --sidebar-ring: oklch(0.646 0.213 35.5);
 }
 
-
 @layer base {
   * {
     border-color: var(--color-border);
@@ -132,5 +130,22 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="switch"]:not(:disabled),
+  [role="checkbox"]:not(:disabled),
+  [role="tab"],
+  a[href],
+  label[for],
+  select,
+  summary {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
   }
 }

@@ -1,9 +1,4 @@
-export type OrderStatus =
-  | "recibido"
-  | "preparacion"
-  | "listo"
-  | "en_camino"
-  | "entregado";
+export type OrderStatus = "recibido" | "preparacion" | "listo" | "en_camino" | "entregado";
 
 export const ORDER_FLOW: OrderStatus[] = [
   "recibido",
@@ -44,6 +39,8 @@ export interface OrderItem {
 
 export interface Order {
   id: string;
+  /** Número corto y humano del pedido (ej. "FP-AB12CD"). Si no está, se usa `id`. */
+  orderNumber?: string;
   customer: string;
   phone: string;
   address: string;
@@ -54,7 +51,7 @@ export interface Order {
   status: OrderStatus;
   courierId: string | null;
   assignedAt: string | null;
-  note?: string;
+  note?: string | undefined;
   /** Coordenadas simuladas (0-100) para la representación de ruta del MVP */
   route: { from: { x: number; y: number }; to: { x: number; y: number } };
 }

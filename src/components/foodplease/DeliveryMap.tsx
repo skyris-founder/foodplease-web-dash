@@ -6,7 +6,13 @@ import type { Courier, Order } from "@/data/types";
  * Representación esquemática del flujo logístico (A → B).
  * No es GPS real ni navegación productiva: usa coordenadas simuladas.
  */
-export function DeliveryMap({ order, courier }: { order: Order; courier?: Courier }) {
+export function DeliveryMap({
+  order,
+  courier,
+}: {
+  order: Pick<Order, "route" | "status" | "address">;
+  courier?: Pick<Courier, "name" | "vehicle" | "distanceKm">;
+}) {
   const { from, to } = order.route;
   const mid = { x: (from.x + to.x) / 2 + 8, y: (from.y + to.y) / 2 - 12 };
   const progress = order.status === "entregado" ? 1 : order.status === "en_camino" ? 0.55 : 0.12;
@@ -21,14 +27,23 @@ export function DeliveryMap({ order, courier }: { order: Order; courier?: Courie
       </div>
 
       <div className="relative aspect-[16/9] w-full bg-muted/60">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 size-full">
+        <svg
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          className="absolute inset-0 size-full"
+        >
           <defs>
             <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
               <path d="M8 0H0V8" fill="none" stroke="var(--border)" strokeWidth="0.4" />
             </pattern>
           </defs>
           <rect width="100" height="100" fill="url(#grid)" />
-          <path d="M0 34 H100 M0 68 H100 M28 0 V100 M66 0 V100" stroke="var(--border)" strokeWidth="1.6" fill="none" />
+          <path
+            d="M0 34 H100 M0 68 H100 M28 0 V100 M66 0 V100"
+            stroke="var(--border)"
+            strokeWidth="1.6"
+            fill="none"
+          />
           <path
             d={`M ${from.x} ${from.y} Q ${mid.x} ${mid.y} ${to.x} ${to.y}`}
             fill="none"

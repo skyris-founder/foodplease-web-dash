@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/store/auth";
 import { useFoodPlease } from "@/store/foodplease";
 
 const NAV = [
@@ -69,6 +70,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
 
 function SidebarFooter() {
   const { settings } = useFoodPlease();
+  const { signOut } = useAuth();
   return (
     <div className="rounded-2xl border border-sidebar-border bg-muted/50 p-3">
       <div className="flex min-w-0 items-center gap-3">
@@ -92,7 +94,7 @@ function SidebarFooter() {
         variant="ghost"
         size="sm"
         className="mt-2 w-full justify-start gap-2 text-muted-foreground hover:text-foreground"
-        onClick={() => toast("Sesión cerrada (demo)", { description: "MVP académico sin autenticación real." })}
+        onClick={() => signOut()}
       >
         <LogOut className="size-4" /> Cerrar sesión
       </Button>
@@ -188,7 +190,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-7xl px-4 py-6 pb-24 sm:px-6 lg:pb-10">{children}</main>
+        <main className="mx-auto w-full max-w-7xl px-4 py-6 pb-24 sm:px-6 lg:pb-10">
+          {children}
+        </main>
       </div>
 
       <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t border-border bg-background/95 backdrop-blur sm:hidden">

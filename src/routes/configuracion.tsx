@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -28,13 +29,30 @@ export const Route = createFileRoute("/configuracion")({
 
 function ConfiguracionPage() {
   const { settings, updateSettings } = useFoodPlease();
+  const [draft, setDraft] = useState({
+    name: settings.name,
+    address: settings.address,
+    phone: settings.phone,
+    schedule: settings.schedule,
+  });
+
+  // Sincroniza el borrador cuando cargan (o cambian) los datos reales del restaurante.
+  useEffect(() => {
+    setDraft({
+      name: settings.name,
+      address: settings.address,
+      phone: settings.phone,
+      schedule: settings.schedule,
+    });
+  }, [settings.name, settings.address, settings.phone, settings.schedule]);
 
   return (
     <div className="flex max-w-3xl flex-col gap-6">
       <header>
         <h2 className="text-2xl font-extrabold tracking-tight">Configuración</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Ajustes locales del MVP; no se guardan en un servidor.
+          La información del restaurante se guarda en Supabase. El estado abierto/cerrado y las
+          preferencias de notificación son locales a este panel por ahora.
         </p>
       </header>
 
@@ -44,6 +62,7 @@ function ConfiguracionPage() {
           className="mt-4 grid gap-4 sm:grid-cols-2"
           onSubmit={(e) => {
             e.preventDefault();
+            updateSettings(draft);
             toast.success("Información actualizada");
           }}
         >
@@ -51,32 +70,32 @@ function ConfiguracionPage() {
             <Label htmlFor="rname">Nombre</Label>
             <Input
               id="rname"
-              value={settings.name}
-              onChange={(e) => updateSettings({ name: e.target.value })}
+              value={draft.name}
+              onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
             />
           </div>
           <div className="grid gap-1.5">
             <Label htmlFor="raddress">Dirección</Label>
             <Input
               id="raddress"
-              value={settings.address}
-              onChange={(e) => updateSettings({ address: e.target.value })}
+              value={draft.address}
+              onChange={(e) => setDraft((d) => ({ ...d, address: e.target.value }))}
             />
           </div>
           <div className="grid gap-1.5">
             <Label htmlFor="rphone">Teléfono</Label>
             <Input
               id="rphone"
-              value={settings.phone}
-              onChange={(e) => updateSettings({ phone: e.target.value })}
+              value={draft.phone}
+              onChange={(e) => setDraft((d) => ({ ...d, phone: e.target.value }))}
             />
           </div>
           <div className="grid gap-1.5">
             <Label htmlFor="rschedule">Horario</Label>
             <Input
               id="rschedule"
-              value={settings.schedule}
-              onChange={(e) => updateSettings({ schedule: e.target.value })}
+              value={draft.schedule}
+              onChange={(e) => setDraft((d) => ({ ...d, schedule: e.target.value }))}
             />
           </div>
           <div className="sm:col-span-2">

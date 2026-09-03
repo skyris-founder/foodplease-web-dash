@@ -109,17 +109,19 @@ function HistorialPage() {
             <table className="w-full min-w-[54rem] text-sm">
               <thead className="bg-muted/60 text-left text-xs text-muted-foreground uppercase">
                 <tr>
-                  {["Pedido", "Fecha", "Cliente", "Total", "Repartidor", "Estado final"].map((h) => (
-                    <th key={h} className="px-4 py-3 font-semibold">
-                      {h}
-                    </th>
-                  ))}
+                  {["Pedido", "Fecha", "Cliente", "Total", "Repartidor", "Estado final"].map(
+                    (h) => (
+                      <th key={h} className="px-4 py-3 font-semibold">
+                        {h}
+                      </th>
+                    ),
+                  )}
                 </tr>
               </thead>
               <tbody>
                 {rows.map((o) => (
                   <tr key={o.id} className="border-t border-border hover:bg-muted/40">
-                    <td className="px-4 py-3 font-semibold">#{o.id}</td>
+                    <td className="px-4 py-3 font-semibold">#{o.orderNumber ?? o.id}</td>
                     <td className="px-4 py-3 text-muted-foreground">
                       {o.date} · {o.time}
                     </td>
@@ -142,7 +144,7 @@ function HistorialPage() {
               <li key={o.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="font-bold">#{o.id}</p>
+                    <p className="font-bold">#{o.orderNumber ?? o.id}</p>
                     <p className="truncate text-sm text-muted-foreground">
                       {o.customer} · {o.date}
                     </p>

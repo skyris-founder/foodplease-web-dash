@@ -45,8 +45,7 @@ function MenuPage() {
   const [editing, setEditing] = useState<Product | null>(null);
   const [creating, setCreating] = useState(false);
 
-  const visible =
-    category === "Todas" ? products : products.filter((p) => p.category === category);
+  const visible = category === "Todas" ? products : products.filter((p) => p.category === category);
 
   return (
     <div className="flex flex-col gap-6">
@@ -98,7 +97,7 @@ function MenuPage() {
                 aria-hidden
               >
                 <span className="text-4xl font-extrabold tracking-tight text-primary/40">
-                  {p.name.slice(0, 2).toUpperCase()}
+                  {p.emoji || p.name.slice(0, 2).toUpperCase()}
                 </span>
                 <UtensilsCrossed className="absolute right-3 bottom-3 size-5 text-primary/40" />
               </div>

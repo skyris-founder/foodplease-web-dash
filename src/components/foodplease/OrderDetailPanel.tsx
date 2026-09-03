@@ -45,7 +45,7 @@ export function OrderDetailPanel({
           <>
             <SheetHeader className="border-b border-border p-5">
               <SheetTitle className="flex flex-wrap items-center gap-3 text-xl">
-                Pedido #{order.id}
+                Pedido #{order.orderNumber ?? order.id}
                 <StatusBadge status={order.status} />
               </SheetTitle>
             </SheetHeader>
@@ -116,8 +116,8 @@ export function OrderDetailBody({ order }: { order: Order }) {
               <AlertDialogHeader>
                 <AlertDialogTitle>¿Confirmar cambio de estado?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  El pedido #{order.id} pasará al siguiente estado y el cliente verá la
-                  actualización en la app móvil.
+                  El pedido #{order.orderNumber ?? order.id} pasará al siguiente estado y el cliente
+                  verá la actualización en la app móvil.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -225,15 +225,7 @@ function Timeline({ order }: { order: Order }) {
   );
 }
 
-function Info({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-}) {
+function Info({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className="flex min-w-0 items-start gap-2.5">
       <span className="mt-0.5 shrink-0 text-muted-foreground">{icon}</span>

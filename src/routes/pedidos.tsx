@@ -126,19 +126,26 @@ function PedidosPage() {
             <table className="w-full min-w-[54rem] text-sm">
               <thead className="bg-muted/60 text-left text-xs text-muted-foreground uppercase">
                 <tr>
-                  {["Pedido", "Cliente", "Hora", "Productos", "Total", "Estado", "Repartidor", ""].map(
-                    (h) => (
-                      <th key={h} className="px-4 py-3 font-semibold">
-                        {h}
-                      </th>
-                    ),
-                  )}
+                  {[
+                    "Pedido",
+                    "Cliente",
+                    "Hora",
+                    "Productos",
+                    "Total",
+                    "Estado",
+                    "Repartidor",
+                    "",
+                  ].map((h) => (
+                    <th key={h} className="px-4 py-3 font-semibold">
+                      {h}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((o) => (
                   <tr key={o.id} className="border-t border-border hover:bg-muted/40">
-                    <td className="px-4 py-3 font-semibold">#{o.id}</td>
+                    <td className="px-4 py-3 font-semibold">#{o.orderNumber ?? o.id}</td>
                     <td className="px-4 py-3">{o.customer}</td>
                     <td className="px-4 py-3 text-muted-foreground">{o.time}</td>
                     <td className="px-4 py-3 text-muted-foreground">
@@ -170,13 +177,10 @@ function PedidosPage() {
           {/* Cards en tablet/móvil */}
           <ul className="flex flex-col gap-3 lg:hidden">
             {filtered.map((o) => (
-              <li
-                key={o.id}
-                className="rounded-2xl border border-border bg-card p-4 shadow-card"
-              >
+              <li key={o.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="font-bold">#{o.id}</p>
+                    <p className="font-bold">#{o.orderNumber ?? o.id}</p>
                     <p className="truncate text-sm text-muted-foreground">{o.customer}</p>
                   </div>
                   <StatusBadge status={o.status} />
@@ -184,8 +188,14 @@ function PedidosPage() {
                 <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
                   <Field label="Hora" value={o.time} />
                   <Field label="Total" value={formatCLP(totalOf(o))} />
-                  <Field label="Productos" value={`${o.items.reduce((a, i) => a + i.qty, 0)} ítems`} />
-                  <Field label="Repartidor" value={getCourier(o.courierId)?.name ?? "Sin asignar"} />
+                  <Field
+                    label="Productos"
+                    value={`${o.items.reduce((a, i) => a + i.qty, 0)} ítems`}
+                  />
+                  <Field
+                    label="Repartidor"
+                    value={getCourier(o.courierId)?.name ?? "Sin asignar"}
+                  />
                 </dl>
                 <Button
                   variant="outline"

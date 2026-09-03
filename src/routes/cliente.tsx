@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { formatCLP } from "@/data/types";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
-import { cn } from "@/lib/utils";
+import { cn, getErrorMessage } from "@/lib/utils";
 import { useAuth } from "@/store/auth";
 
 export const Route = createFileRoute("/cliente")({
@@ -622,7 +622,7 @@ function ClienteApp() {
     onError: (err) => {
       console.error("[cliente] error creando pedido", err);
       toast.error("No pudimos confirmar tu pedido", {
-        description: err instanceof Error ? err.message : "Intenta de nuevo en unos segundos.",
+        description: getErrorMessage(err, "Intenta de nuevo en unos segundos."),
       });
     },
   });

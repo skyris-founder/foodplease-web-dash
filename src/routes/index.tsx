@@ -28,8 +28,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Dashboard operativo | FoodPlease Restaurantes" },
       {
         property: "og:description",
-        content:
-          "Visualiza pedidos, estados y métricas del restaurante en un solo panel moderno.",
+        content: "Visualiza pedidos, estados y métricas del restaurante en un solo panel moderno.",
       },
     ],
   }),
@@ -50,10 +49,33 @@ function Dashboard() {
       </header>
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Metric icon={ReceiptText} label="Pedidos de hoy" value={String(m.todayCount)} hint={`${m.delivered} entregados`} />
-        <Metric icon={Clock} label="Pedidos pendientes" value={String(m.pending)} hint="Esperando confirmación" tone="warning" />
-        <Metric icon={ChefHat} label="En preparación" value={String(m.preparing)} hint="En cocina ahora" tone="primary" />
-        <Metric icon={DollarSign} label="Ventas del día" value={formatCLP(m.sales)} hint={`${m.onRoute} pedidos en camino`} tone="success" />
+        <Metric
+          icon={ReceiptText}
+          label="Pedidos de hoy"
+          value={String(m.todayCount)}
+          hint={`${m.delivered} entregados`}
+        />
+        <Metric
+          icon={Clock}
+          label="Pedidos pendientes"
+          value={String(m.pending)}
+          hint="Esperando confirmación"
+          tone="warning"
+        />
+        <Metric
+          icon={ChefHat}
+          label="En preparación"
+          value={String(m.preparing)}
+          hint="En cocina ahora"
+          tone="primary"
+        />
+        <Metric
+          icon={DollarSign}
+          label="Ventas del día"
+          value={formatCLP(m.sales)}
+          hint={`${m.onRoute} pedidos en camino`}
+          tone="success"
+        />
       </section>
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
@@ -79,7 +101,7 @@ function Dashboard() {
               <tbody>
                 {recent.map((o) => (
                   <tr key={o.id} className="border-t border-border hover:bg-muted/40">
-                    <td className="px-4 py-3 font-semibold">#{o.id}</td>
+                    <td className="px-4 py-3 font-semibold">#{o.orderNumber ?? o.id}</td>
                     <td className="px-4 py-3">{o.customer}</td>
                     <td className="px-4 py-3 text-muted-foreground">{o.time}</td>
                     <td className="px-4 py-3 font-medium">{formatCLP(totalOf(o))}</td>
@@ -110,7 +132,7 @@ function Dashboard() {
               <li key={o.id} className="p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="font-bold">#{o.id}</p>
+                    <p className="font-bold">#{o.orderNumber ?? o.id}</p>
                     <p className="truncate text-sm text-muted-foreground">
                       {o.customer} · {o.time}
                     </p>

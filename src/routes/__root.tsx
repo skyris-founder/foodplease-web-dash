@@ -134,6 +134,15 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 /**
+ * `pathname.startsWith(base)` por sí solo confunde "/repartidor" (la app del
+ * repartidor) con "/repartidores" (la página del dashboard de restaurante) —
+ * esta función exige que lo que sigue sea el final de la ruta o un "/".
+ */
+function isUnderPath(pathname: string, base: string) {
+  return pathname === base || pathname.startsWith(`${base}/`);
+}
+
+/**
  * Enruta según el rol del usuario autenticado:
  * - sin sesión           -> /login
  * - role "restaurante"   -> AppShell + dashboard actual (sin cambios)
@@ -162,13 +171,13 @@ function AppRouting() {
 
     if (!role) return;
 
-    if (role === "cliente" && !pathname.startsWith("/cliente")) {
+    if (role === "cliente" && !isUnderPath(pathname, "/cliente")) {
       navigate({ to: "/cliente" });
-    } else if (role === "repartidor" && !pathname.startsWith("/repartidor")) {
+    } else if (role === "repartidor" && !isUnderPath(pathname, "/repartidor")) {
       navigate({ to: "/repartidor" });
     } else if (
       role === "restaurante" &&
-      (pathname.startsWith("/cliente") || pathname.startsWith("/repartidor"))
+      (isUnderPath(pathname, "/cliente") || isUnderPath(pathname, "/repartidor"))
     ) {
       navigate({ to: "/" });
     }
@@ -201,6 +210,24 @@ function AppRouting() {
         <Button variant="outline" className="rounded-xl" onClick={() => signOut()}>
           Cerrar sesión
         </Button>
+      </div>
+    );
+  }
+
+  // El rol ya se conoce pero la URL todavía no coincide con su experiencia
+  // (el redirect de arriba está en camino): evita pintar la vista equivocada
+  // durante ese instante.
+  const isOnOwnRoute =
+    (role === "cliente" && isUnderPath(pathname, "/cliente")) ||
+    (role === "repartidor" && isUnderPath(pathname, "/repartidor")) ||
+    (role === "restaurante" &&
+      !isUnderPath(pathname, "/cliente") &&
+      !isUnderPath(pathname, "/repartidor"));
+
+  if (!isOnOwnRoute) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p className="text-sm text-muted-foreground">Cargando…</p>
       </div>
     );
   }

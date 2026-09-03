@@ -119,7 +119,8 @@ function RepartidoresPage() {
                           className="flex items-center justify-between gap-3 rounded-xl border border-border p-3 text-sm"
                         >
                           <span className="min-w-0 truncate">
-                            <span className="font-semibold">#{o.id}</span> · {o.customer}
+                            <span className="font-semibold">#{o.orderNumber ?? o.id}</span> ·{" "}
+                            {o.customer}
                           </span>
                           <span className="shrink-0 font-medium">{formatCLP(totalOf(o))}</span>
                         </li>

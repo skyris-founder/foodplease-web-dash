@@ -102,7 +102,7 @@ function ClienteHeader({ subtitle }: { subtitle?: string | undefined }) {
             Food<span className="text-primary">Please</span>
           </span>
           <span className="block truncate text-[11px] font-medium text-muted-foreground">
-            {subtitle ?? `Hola, ${profile?.name ?? "cliente"}`}
+            {subtitle ?? `¡Hola ${profile?.name ?? "cliente"}!`}
           </span>
         </span>
       </div>
